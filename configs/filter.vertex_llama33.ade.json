@@ -1,0 +1,14 @@
+{
+  "input_path": "data/interim/ade_vertex_llama33_synth_raw.jsonl",
+  "output_path": "data/processed/ade_vertex_llama33_synth_filtered.jsonl",
+  "payload_field": "teacher_output",
+  "required_fields": [
+    "answer",
+    "evidence"
+  ],
+  "confidence_field": "confidence",
+  "min_confidence": 0.65,
+  "evidence_field": "evidence",
+  "drop_if_missing_evidence": true,
+  "dedupe_on": "user_input"
+}
