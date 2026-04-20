@@ -1,0 +1,7 @@
+{
+  "input_path": "data/processed/ade_vertex_llama33_synth_filtered.v2.jsonl",
+  "output_path": "data/processed/ade_llama31_sft_from_vertex_llama33.v2.jsonl",
+  "assistant_field": "teacher_output",
+  "user_field": "user_input",
+  "system_prompt": "You are a careful biomedical assistant. For each case, return a compact JSON answer grounded in the provided evidence. If the evidence is insufficient, abstain."
+}

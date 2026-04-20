@@ -32,6 +32,9 @@ def main() -> None:
         compare_field=config.get("compare_field"),
         abstain_values=config.get("abstain_values", []),
         positive_labels=config.get("positive_labels", []),
+        span_fields=config.get("span_fields", []),
+        span_positive_compare_field=config.get("span_positive_compare_field"),
+        span_positive_labels=config.get("span_positive_labels", []),
     )
 
     print(json.dumps(metrics, indent=2, sort_keys=True))

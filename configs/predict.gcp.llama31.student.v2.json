@@ -1,0 +1,22 @@
+{
+  "model": {
+    "name_or_path": "meta-llama/Llama-3.1-8B-Instruct",
+    "adapter_path": "outputs/llama31-8b-ade-sft-from-vertex-llama33-v2",
+    "trust_remote_code": false,
+    "quantization": "4bit"
+  },
+  "input": {
+    "path": "evals/ade_eval.jsonl",
+    "prompt_field": "prompt"
+  },
+  "task": {
+    "system_prompt": "You are a careful biomedical assistant. For each case, return a compact JSON answer grounded in the provided evidence. If the evidence is insufficient, abstain."
+  },
+  "generation": {
+    "max_new_tokens": 256,
+    "temperature": 0.0
+  },
+  "output": {
+    "path": "outputs/llama31_ade_predictions_from_vertex_llama33.v2.jsonl"
+  }
+}

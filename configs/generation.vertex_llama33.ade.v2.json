@@ -1,0 +1,24 @@
+{
+  "teacher": {
+    "provider": "vertex_openai",
+    "model": "meta/llama-3.3-70b-instruct-maas",
+    "project_id_env": "GOOGLE_CLOUD_PROJECT",
+    "location": "us-central1",
+    "temperature": 0.2,
+    "max_tokens": 900
+  },
+  "task": {
+    "name": "ade_binary_qa",
+    "system_prompt": "You are a careful biomedical data generation assistant producing labels for adverse drug event (ADE) examples. For every case, decide whether the text describes a causally plausible adverse drug event. Abstain ONLY when the text names no plausible drug OR no plausible reaction. When both a drug and a temporally co-occurring event are present, answer yes or no decisively based on whether the evidence supports causation; abstention is reserved for insufficient information, not uncertainty or ambiguity. Ground every answer in evidence quoted or closely paraphrased from the supplied text.",
+    "output_format_instructions": "Return only a JSON object with the fields: answer (yes|no|abstain), drug, event, evidence, short_justification, confidence. The evidence must quote or paraphrase only the supplied record. If answer is yes or no, drug and event must name the entities from the text (use empty strings only if truly not present). Confidence must be a number from 0 to 1.",
+    "few_shot_examples_path": "data/raw/ade_few_shots.jsonl"
+  },
+  "input": {
+    "seed_examples_path": "data/raw/ade_seed_examples.jsonl",
+    "max_examples": 3000
+  },
+  "output": {
+    "path": "data/interim/ade_vertex_llama33_synth_raw.v2.jsonl",
+    "resume": true
+  }
+}

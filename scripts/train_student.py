@@ -142,6 +142,10 @@ def main() -> None:
         remove_columns=dataset["train"].column_names,
     )
 
+    has_eval = "eval" in tokenized
+    load_best_model_at_end = bool(
+        has_eval and config["training"].get("load_best_model_at_end", False)
+    )
     training_args = TrainingArguments(
         output_dir=config["training"]["output_dir"],
         num_train_epochs=config["training"].get("num_train_epochs", 1),
@@ -152,7 +156,11 @@ def main() -> None:
         weight_decay=config["training"].get("weight_decay", 0.01),
         logging_steps=config["training"].get("logging_steps", 10),
         save_strategy=config["training"].get("save_strategy", "epoch"),
-        eval_strategy="epoch" if "eval" in tokenized else "no",
+        eval_strategy="epoch" if has_eval else "no",
+        load_best_model_at_end=load_best_model_at_end,
+        metric_for_best_model=config["training"].get("metric_for_best_model", "eval_loss") if load_best_model_at_end else None,
+        greater_is_better=config["training"].get("greater_is_better", False) if load_best_model_at_end else None,
+        save_total_limit=config["training"].get("save_total_limit", 3),
         report_to="none",
         bf16=config["training"].get("bf16", False),
         fp16=config["training"].get("fp16", False),

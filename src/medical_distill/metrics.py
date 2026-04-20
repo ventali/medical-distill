@@ -60,11 +60,17 @@ def compute_basic_metrics(
     compare_field: str | None = None,
     abstain_values: list[str] | None = None,
     positive_labels: list[str] | None = None,
+    span_fields: list[str] | None = None,
+    span_positive_compare_field: str | None = None,
+    span_positive_labels: list[str] | None = None,
 ) -> dict[str, Any]:
     abstain_values = abstain_values or []
     positive_labels = positive_labels or []
+    span_fields = span_fields or []
+    span_positive_labels = span_positive_labels or []
     abstain_set = {normalize_text(value) for value in abstain_values}
     positive_set = {normalize_text(value) for value in positive_labels}
+    span_positive_set = {normalize_text(value) for value in span_positive_labels}
 
     exact_matches = 0
     token_f1_sum = 0.0
@@ -72,6 +78,10 @@ def compute_basic_metrics(
     true_positive = 0
     false_positive = 0
     false_negative = 0
+
+    span_exact_matches: dict[str, int] = {f: 0 for f in span_fields}
+    span_token_f1_sum: dict[str, float] = {f: 0.0 for f in span_fields}
+    span_eligible: dict[str, int] = {f: 0 for f in span_fields}
 
     for row in rows:
         prediction = resolve_field(row, prediction_field, compare_field)
@@ -96,6 +106,23 @@ def compute_basic_metrics(
             elif not prediction_is_positive and reference_is_positive:
                 false_negative += 1
 
+        if span_fields:
+            span_gate = resolve_field(row, reference_field, span_positive_compare_field) if span_positive_compare_field else None
+            eligible_row = (
+                True
+                if not span_positive_set
+                else normalize_text(span_gate) in span_positive_set
+            )
+            for span in span_fields:
+                pred_span = resolve_field(row, prediction_field, span)
+                ref_span = resolve_field(row, reference_field, span)
+                if not eligible_row:
+                    continue
+                span_eligible[span] += 1
+                if exact_match(pred_span, ref_span):
+                    span_exact_matches[span] += 1
+                span_token_f1_sum[span] += token_f1(pred_span, ref_span)
+
     total = len(rows)
     metrics: dict[str, Any] = {
         "count": total,
@@ -111,6 +138,12 @@ def compute_basic_metrics(
         metrics["positive_precision"] = precision
         metrics["positive_recall"] = recall
         metrics["positive_f1"] = f1
+
+    for span in span_fields:
+        denom = span_eligible[span]
+        metrics[f"span_{span}_exact_match"] = span_exact_matches[span] / denom if denom else 0.0
+        metrics[f"span_{span}_token_f1"] = span_token_f1_sum[span] / denom if denom else 0.0
+        metrics[f"span_{span}_eligible_count"] = denom
 
     return metrics
 

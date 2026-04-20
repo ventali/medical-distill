@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -38,6 +39,20 @@ def main() -> None:
     min_confidence = float(config.get("min_confidence", 0.0))
     dedupe_on = config.get("dedupe_on", "user_input")
     drop_if_missing_evidence = bool(config.get("drop_if_missing_evidence", True))
+    source_field = config.get("source_field", "user_input")
+    require_evidence_overlap = float(config.get("require_evidence_overlap", 0.0))
+
+    def word_overlap(a: Any, b: Any) -> float:
+        def tokens(value: Any) -> set[str]:
+            if not isinstance(value, str):
+                return set()
+            return {t for t in re.split(r"\W+", value.lower()) if len(t) >= 3}
+
+        evidence_tokens = tokens(a)
+        source_tokens = tokens(b)
+        if not evidence_tokens:
+            return 0.0
+        return len(evidence_tokens & source_tokens) / len(evidence_tokens)
 
     filtered_rows: list[dict[str, Any]] = []
     seen_keys: set[str] = set()
@@ -48,6 +63,7 @@ def main() -> None:
         "missing_required_fields": 0,
         "below_confidence": 0,
         "missing_evidence": 0,
+        "low_evidence_overlap": 0,
         "duplicates": 0,
     }
 
@@ -71,6 +87,12 @@ def main() -> None:
         if drop_if_missing_evidence and evidence in (None, "", []):
             stats["missing_evidence"] += 1
             continue
+
+        if require_evidence_overlap > 0.0:
+            source_text = row.get(source_field) or get_nested_value(row, source_field)
+            if word_overlap(evidence, source_text) < require_evidence_overlap:
+                stats["low_evidence_overlap"] += 1
+                continue
 
         dedupe_value = row.get(dedupe_on)
         if dedupe_value is None:
