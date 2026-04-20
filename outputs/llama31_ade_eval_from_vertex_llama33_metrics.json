@@ -1,0 +1,9 @@
+{
+  "abstain_rate": 0.315,
+  "avg_token_f1": 0.555,
+  "count": 200,
+  "exact_match": 0.555,
+  "positive_f1": 0.8839285714285715,
+  "positive_precision": 0.7983870967741935,
+  "positive_recall": 0.99
+}

@@ -12,6 +12,7 @@ __pycache__/
 
 outputs/*
 !outputs/.gitkeep
+!outputs/*_metrics.json
 
 data/processed/*.jsonl
 data/interim/*.jsonl
