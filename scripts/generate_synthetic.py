@@ -222,7 +222,10 @@ def main() -> None:
                 "created_at": datetime.now(timezone.utc).isoformat(),
             }
         )
-        print(f"[{index}/{len(input_rows)}] generated {seed_id}")
+        print(f"[{index}/{len(input_rows)}] generated {seed_id}", flush=True)
+
+        if len(new_rows) % 25 == 0:
+            write_jsonl(output_path, existing_rows + new_rows)
 
     merged_rows = existing_rows + new_rows
     write_jsonl(output_path, merged_rows)
