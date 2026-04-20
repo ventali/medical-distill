@@ -1,0 +1,23 @@
+{
+  "teacher": {
+    "model": "gpt-4.1",
+    "api_key_env": "OPENAI_API_KEY",
+    "base_url": null,
+    "temperature": 0.2,
+    "max_tokens": 900
+  },
+  "task": {
+    "name": "ade_binary_qa",
+    "system_prompt": "You are a careful biomedical data generation assistant. Produce high-quality labels for adverse drug event examples. Be conservative, ground every answer in the provided evidence, and abstain when the evidence is insufficient.",
+    "output_format_instructions": "Return only a JSON object with the fields: answer (yes|no|abstain), drug, event, evidence, short_justification, confidence. The evidence must quote or paraphrase only the supplied record. Confidence must be a number from 0 to 1.",
+    "few_shot_examples_path": null
+  },
+  "input": {
+    "seed_examples_path": "data/raw/ade_seed_examples.jsonl",
+    "max_examples": 50
+  },
+  "output": {
+    "path": "data/interim/ade_synth_raw.jsonl",
+    "resume": true
+  }
+}

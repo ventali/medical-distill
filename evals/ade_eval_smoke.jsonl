@@ -1,0 +1,4 @@
+{"id":"eval-1","prompt":"Patient started amoxicillin and developed diffuse urticaria two days later. Is this consistent with a possible adverse drug event?","reference":{"answer":"yes","drug":"amoxicillin","event":"urticaria"},"prediction":{"answer":"yes","drug":"amoxicillin","event":"urticaria"}}
+{"id":"eval-2","prompt":"The patient on metformin presented with ankle pain after a fall. Is this consistent with a possible adverse drug event?","reference":{"answer":"no","drug":"metformin","event":"ankle pain"},"prediction":{"answer":"no","drug":"metformin","event":"ankle pain"}}
+{"id":"eval-3","prompt":"The chart mentions fatigue during chemotherapy but gives no timing and no implicated medication. Is this enough to label an adverse drug event?","reference":{"answer":"abstain","drug":"","event":"fatigue"},"prediction":{"answer":"abstain","drug":"","event":"fatigue"}}
+

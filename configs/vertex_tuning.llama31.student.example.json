@@ -1,0 +1,25 @@
+{
+  "vertex": {
+    "project_id_env": "GOOGLE_CLOUD_PROJECT",
+    "location": "us-central1",
+    "display_name": "medical-distill-ade-llama31-8b-sft",
+    "train_dataset_gcs_uri": "gs://YOUR_BUCKET/medical-distill/data/ade_llama31_vertex_train.jsonl",
+    "validation_dataset_gcs_uri": "gs://YOUR_BUCKET/medical-distill/data/ade_llama31_vertex_validation.jsonl",
+    "output_uri": "gs://YOUR_BUCKET/medical-distill/output/vertex_tuning_run_001"
+  },
+  "source_model": {
+    "base_model": "meta/llama3_1@llama-3.1-8b-instruct"
+  },
+  "tuning": {
+    "mode": "PEFT_ADAPTER",
+    "epochs": 3,
+    "adapter_size": 8,
+    "learning_rate_multiplier": 1.0
+  },
+  "labels": {
+    "project": "medical-distill",
+    "task": "ade",
+    "student": "llama31-8b"
+  }
+}
+

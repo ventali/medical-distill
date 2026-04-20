@@ -1,0 +1,15 @@
+{
+  "input_path": "outputs/llama31_ade_predictions.sample.jsonl",
+  "prediction_field": "prediction",
+  "reference_field": "reference",
+  "compare_field": "answer",
+  "positive_labels": [
+    "yes"
+  ],
+  "abstain_values": [
+    "abstain",
+    "insufficient_evidence"
+  ],
+  "output_path": "outputs/llama31_ade_eval_metrics.json"
+}
+

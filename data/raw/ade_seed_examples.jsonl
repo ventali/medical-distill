@@ -1,0 +1,4 @@
+{"id":"seed-1","prompt":"Patient started amoxicillin and developed diffuse urticaria two days later. Is this consistent with a possible adverse drug event?","metadata":{"task":"ade_binary_qa","source":"synthetic_seed"}}
+{"id":"seed-2","prompt":"After initiating lisinopril, the patient reported a persistent dry cough without signs of infection. Is this consistent with a possible adverse drug event?","metadata":{"task":"ade_binary_qa","source":"synthetic_seed"}}
+{"id":"seed-3","prompt":"The patient on metformin presented with ankle pain after a fall. Is this consistent with a possible adverse drug event?","metadata":{"task":"ade_binary_qa","source":"synthetic_seed"}}
+

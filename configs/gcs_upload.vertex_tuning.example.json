@@ -1,0 +1,15 @@
+{
+  "project_id_env": "GOOGLE_CLOUD_PROJECT",
+  "uploads": [
+    {
+      "local_path": "data/processed/vertex/ade_llama31_vertex_train.sample.jsonl",
+      "bucket": "YOUR_BUCKET",
+      "blob": "medical-distill/data/ade_llama31_vertex_train.jsonl"
+    },
+    {
+      "local_path": "data/processed/vertex/ade_llama31_vertex_validation.sample.jsonl",
+      "bucket": "YOUR_BUCKET",
+      "blob": "medical-distill/data/ade_llama31_vertex_validation.jsonl"
+    }
+  ]
+}

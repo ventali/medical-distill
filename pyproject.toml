@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "medical-distill"
+version = "0.1.0"
+description = "Scaffold for biomedical LLM distillation workflows."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "accelerate",
+  "datasets",
+  "google-auth",
+  "openai",
+  "peft",
+  "requests",
+  "torch",
+  "transformers",
+]
+
+[project.optional-dependencies]
+gpu = [
+  "bitsandbytes",
+]
+gcp = [
+  "google-cloud-aiplatform",
+  "google-cloud-storage",
+]
+serve = [
+  "vllm",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

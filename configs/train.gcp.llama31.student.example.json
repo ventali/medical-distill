@@ -1,0 +1,42 @@
+{
+  "model": {
+    "name_or_path": "meta-llama/Llama-3.1-8B-Instruct",
+    "trust_remote_code": false,
+    "quantization": "4bit"
+  },
+  "data": {
+    "train_path": "data/processed/ade_llama31_sft_from_vertex_llama33.sample.jsonl",
+    "eval_path": "evals/ade_eval_smoke.jsonl",
+    "max_length": 2048
+  },
+  "lora": {
+    "enabled": true,
+    "r": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "training": {
+    "output_dir": "outputs/llama31-8b-ade-sft-from-vertex-llama33",
+    "num_train_epochs": 1,
+    "learning_rate": 2e-4,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "warmup_ratio": 0.03,
+    "weight_decay": 0.01,
+    "logging_steps": 5,
+    "save_strategy": "epoch",
+    "bf16": true,
+    "fp16": false,
+    "gradient_checkpointing": true
+  }
+}
+

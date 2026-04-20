@@ -1,0 +1,10 @@
+{
+  "train_input_path": "data/processed/ade_llama31_sft_from_vertex_llama33.sample.jsonl",
+  "train_output_path": "data/processed/vertex/ade_llama31_vertex_train.sample.jsonl",
+  "validation_input_path": "evals/ade_eval_smoke.jsonl",
+  "validation_output_path": "data/processed/vertex/ade_llama31_vertex_validation.sample.jsonl",
+  "system_prompt": "You are a careful biomedical assistant. For each case, return a compact JSON answer grounded in the provided evidence. If the evidence is insufficient, abstain.",
+  "validation_prompt_field": "prompt",
+  "validation_reference_field": "reference"
+}
+
