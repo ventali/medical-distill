@@ -152,7 +152,7 @@ def main() -> None:
         weight_decay=config["training"].get("weight_decay", 0.01),
         logging_steps=config["training"].get("logging_steps", 10),
         save_strategy=config["training"].get("save_strategy", "epoch"),
-        evaluation_strategy="epoch" if "eval" in tokenized else "no",
+        eval_strategy="epoch" if "eval" in tokenized else "no",
         report_to="none",
         bf16=config["training"].get("bf16", False),
         fp16=config["training"].get("fp16", False),
@@ -164,7 +164,7 @@ def main() -> None:
         args=training_args,
         train_dataset=tokenized["train"],
         eval_dataset=tokenized["eval"] if "eval" in tokenized else None,
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
         data_collator=DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False),
     )
     trainer.train()

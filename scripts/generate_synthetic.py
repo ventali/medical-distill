@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import os
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -189,12 +190,31 @@ def main() -> None:
 
         messages = build_messages(config["task"], seed_record, few_shots)
         client_bundle = refresh_client_bundle_if_needed(config["teacher"], client_bundle)
-        response = client_bundle["client"].chat.completions.create(
-            model=config["teacher"]["model"],
-            messages=messages,
-            temperature=config["teacher"].get("temperature", 0.2),
-            max_tokens=config["teacher"].get("max_tokens", 900),
-        )
+        last_exc: Exception | None = None
+        response = None
+        for attempt in range(5):
+            try:
+                response = client_bundle["client"].chat.completions.create(
+                    model=config["teacher"]["model"],
+                    messages=messages,
+                    temperature=config["teacher"].get("temperature", 0.2),
+                    max_tokens=config["teacher"].get("max_tokens", 900),
+                    timeout=60,
+                )
+                break
+            except Exception as exc:
+                last_exc = exc
+                sleep_for = min(30, 2 ** attempt)
+                print(
+                    f"[{index}/{len(input_rows)}] {seed_id} attempt {attempt + 1} failed: "
+                    f"{type(exc).__name__}: {exc}; retrying in {sleep_for}s",
+                    flush=True,
+                )
+                time.sleep(sleep_for)
+                client_bundle = refresh_client_bundle_if_needed(config["teacher"], client_bundle)
+        if response is None:
+            write_jsonl(output_path, existing_rows + new_rows)
+            raise SystemExit(f"Gave up on {seed_id} after 5 attempts: {last_exc}")
         raw_text = message_content_to_text(response.choices[0].message.content)
         parsed_payload = extract_json_block(raw_text)
 
