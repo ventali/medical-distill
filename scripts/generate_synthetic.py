@@ -102,8 +102,21 @@ def refresh_google_access_token() -> tuple[str, str | None]:
         scopes=["https://www.googleapis.com/auth/cloud-platform"]
     )
     request = google.auth.transport.requests.Request()
-    credentials.refresh(request)
-    return credentials.token, discovered_project_id
+    last_exc: Exception | None = None
+    for attempt in range(5):
+        try:
+            credentials.refresh(request)
+            return credentials.token, discovered_project_id
+        except Exception as exc:
+            last_exc = exc
+            sleep_for = min(30, 2 ** attempt)
+            print(
+                f"google token refresh attempt {attempt + 1} failed: "
+                f"{type(exc).__name__}: {exc}; retrying in {sleep_for}s",
+                flush=True,
+            )
+            time.sleep(sleep_for)
+    raise SystemExit(f"Gave up refreshing Google token after 5 attempts: {last_exc}")
 
 
 def resolve_vertex_project_id(teacher_config: dict[str, Any], discovered_project_id: str | None) -> str:

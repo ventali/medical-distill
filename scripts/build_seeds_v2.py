@@ -163,7 +163,7 @@ def build() -> None:
                 {"role": "assistant", "content": json.dumps(gold, ensure_ascii=False, indent=2, sort_keys=True)},
             ],
             "reference": gold,
-            "metadata": {"teacher_model": "gold_ade_corpus_v2"},
+            "metadata": {"teacher_model": "gold_ade_corpus_v2", "source_id": ""},
         })
     for r in eval_neg:
         gold = {
@@ -183,11 +183,12 @@ def build() -> None:
                 {"role": "assistant", "content": json.dumps(gold, ensure_ascii=False, indent=2, sort_keys=True)},
             ],
             "reference": gold,
-            "metadata": {"teacher_model": "gold_ade_corpus_v2"},
+            "metadata": {"teacher_model": "gold_ade_corpus_v2", "source_id": ""},
         })
     random.shuffle(eval_records)
     for i, r in enumerate(eval_records, 1):
         r["id"] = f"eval-{i:05d}"
+        r["metadata"]["source_id"] = r["id"]
 
     seed_path = Path("data/raw/ade_seed_examples.jsonl")
     eval_path = Path("evals/ade_eval.jsonl")

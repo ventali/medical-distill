@@ -41,6 +41,7 @@ def main() -> None:
         sft_rows.append(
             {
                 "id": row.get("seed_id", f"example-{index}"),
+                "prompt": user_input,
                 "messages": [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_input},
