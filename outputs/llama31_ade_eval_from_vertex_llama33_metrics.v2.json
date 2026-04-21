@@ -1,0 +1,15 @@
+{
+  "abstain_rate": 0.135,
+  "avg_token_f1": 0.715,
+  "count": 200,
+  "exact_match": 0.715,
+  "positive_f1": 0.8597285067873304,
+  "positive_precision": 0.7851239669421488,
+  "positive_recall": 0.95,
+  "span_drug_eligible_count": 100,
+  "span_drug_exact_match": 0.84,
+  "span_drug_token_f1": 0.883,
+  "span_event_eligible_count": 100,
+  "span_event_exact_match": 0.71,
+  "span_event_token_f1": 0.8661058707374497
+}
